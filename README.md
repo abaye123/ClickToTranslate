@@ -130,7 +130,10 @@ ClickToTranslate/
 ├── SettingsWindow.xaml/.cs     # חלון ההגדרות
 ├── TranslationService.cs       # לוגיקת התרגום (Google + DeepL)
 ├── SettingsManager.cs          # טעינה/שמירה של JSON
-└── UriProtocolHandler.cs       # רישום ב-Windows Registry
+├── UriProtocolHandler.cs       # רישום ב-Windows Registry
+└── Themes/
+    └── ModernStyles.xaml       # סגנונות מודרניים לכל הפקדים
+                                # (ComboBox, CheckBox, ScrollBar, TextBox)
 ```
 
 ## ⚠️ מגבלות ידועות

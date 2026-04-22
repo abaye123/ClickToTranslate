@@ -1,32 +1,26 @@
 <Window x:Class="ClickToTranslate.TranslationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="תרגום" Height="380" Width="440"
+        Title="תרגום" Height="400" Width="460"
+        Icon="icon.ico"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         Topmost="True"
         ShowInTaskbar="False"
         ResizeMode="CanResizeWithGrip"
-        MinWidth="320" MinHeight="260"
-        FlowDirection="RightToLeft">
+        MinWidth="340" MinHeight="280"
+        FlowDirection="RightToLeft"
+        UseLayoutRounding="True"
+        TextOptions.TextFormattingMode="Display">
 
     <Window.Resources>
-        <!-- צבעים -->
-        <SolidColorBrush x:Key="BgBrush" Color="#1E1E2E"/>
-        <SolidColorBrush x:Key="CardBrush" Color="#2A2A3C"/>
-        <SolidColorBrush x:Key="AccentBrush" Color="#89B4FA"/>
-        <SolidColorBrush x:Key="AccentHoverBrush" Color="#A5C4FA"/>
-        <SolidColorBrush x:Key="TextBrush" Color="#CDD6F4"/>
-        <SolidColorBrush x:Key="SubtleTextBrush" Color="#9399B2"/>
-        <SolidColorBrush x:Key="BorderBrush" Color="#45475A"/>
-
-        <!-- סגנון כפתור פעולה -->
+        <!-- סגנון כפתור פעולה (בסרגל הכלים התחתון) -->
         <Style x:Key="IconButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Padding" Value="10,6"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Template">
@@ -40,7 +34,11 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#3C3C52"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource CardHoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource AccentDarkBrush}"/>
+                                <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -48,12 +46,16 @@
             </Setter>
         </Style>
 
-        <!-- סגנון כפתור סגירה -->
-        <Style x:Key="CloseButton" TargetType="Button" BasedOn="{StaticResource IconButton}">
+        <!-- כפתור סגירה עגול -->
+        <Style x:Key="CloseButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource SubtleTextBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Width" Value="28"/>
             <Setter Property="Height" Value="28"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -64,13 +66,20 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#E06C75"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource DangerBrush}"/>
                                 <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <!-- ComboBox קומפקטי לשפה בסרגל התחתון -->
+        <Style x:Key="CompactComboBox" TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="10,0"/>
         </Style>
     </Window.Resources>
 
@@ -79,9 +88,9 @@
             CornerRadius="12"
             BorderBrush="{StaticResource BorderBrush}"
             BorderThickness="1"
-            Margin="10">
+            Margin="12">
         <Border.Effect>
-            <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="3" Opacity="0.5"/>
+            <DropShadowEffect Color="Black" BlurRadius="22" ShadowDepth="3" Opacity="0.55"/>
         </Border.Effect>
 
         <Grid>
@@ -115,12 +124,18 @@
                                    FontWeight="SemiBold"
                                    Foreground="{StaticResource TextBrush}"
                                    VerticalAlignment="Center"/>
-                        <TextBlock x:Name="EngineLabel"
-                                   Text=""
-                                   FontSize="11"
-                                   Foreground="{StaticResource SubtleTextBrush}"
-                                   VerticalAlignment="Center"
-                                   Margin="10,0,0,0"/>
+                        <Border Background="{StaticResource BgBrush}"
+                                CornerRadius="10"
+                                Padding="8,3"
+                                Margin="10,0,0,0"
+                                VerticalAlignment="Center">
+                            <TextBlock x:Name="EngineLabel"
+                                       Text=""
+                                       FontSize="10"
+                                       FontWeight="Medium"
+                                       Foreground="{StaticResource AccentBrush}"
+                                       VerticalAlignment="Center"/>
+                        </Border>
                     </StackPanel>
 
                     <Button Grid.Column="1"
@@ -139,12 +154,12 @@
                 <StackPanel>
                     <TextBlock Text="טקסט מקור"
                                FontSize="10"
+                               FontWeight="SemiBold"
                                Foreground="{StaticResource SubtleTextBrush}"
-                               Margin="0,0,0,4"/>
+                               Margin="0,0,0,6"/>
                     <ScrollViewer MaxHeight="80" VerticalScrollBarVisibility="Auto">
                         <TextBox x:Name="SourceTextBox"
-                                 Background="Transparent"
-                                 BorderThickness="0"
+                                 Style="{StaticResource InlineTextBox}"
                                  Foreground="{StaticResource TextBrush}"
                                  FontSize="13"
                                  TextWrapping="Wrap"
@@ -162,16 +177,15 @@
                     Padding="12,10">
                 <Grid>
                     <StackPanel>
-                        <Grid>
+                        <Grid Margin="0,0,0,6">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="תרגום"
                                        FontSize="10"
-                                       Foreground="{StaticResource AccentBrush}"
                                        FontWeight="SemiBold"
-                                       Margin="0,0,0,4"/>
+                                       Foreground="{StaticResource AccentBrush}"/>
                             <TextBlock Grid.Column="1"
                                        x:Name="DetectedLangLabel"
                                        Text=""
@@ -180,8 +194,7 @@
                         </Grid>
                         <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="180">
                             <TextBox x:Name="TranslatedTextBox"
-                                     Background="Transparent"
-                                     BorderThickness="0"
+                                     Style="{StaticResource InlineTextBox}"
                                      Foreground="{StaticResource TextBrush}"
                                      FontSize="15"
                                      TextWrapping="Wrap"
@@ -195,14 +208,38 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Visibility="Visible">
-                        <TextBlock Text="⏳"
-                                   FontSize="28"
-                                   HorizontalAlignment="Center"/>
+                        <!-- ספינר מסתובב -->
+                        <Grid Width="32" Height="32" HorizontalAlignment="Center">
+                            <Ellipse Stroke="{StaticResource BorderBrush}"
+                                     StrokeThickness="3"/>
+                            <Ellipse x:Name="SpinnerArc"
+                                     Stroke="{StaticResource AccentBrush}"
+                                     StrokeThickness="3"
+                                     StrokeDashArray="4 8"
+                                     RenderTransformOrigin="0.5,0.5">
+                                <Ellipse.RenderTransform>
+                                    <RotateTransform x:Name="SpinnerRotate" Angle="0"/>
+                                </Ellipse.RenderTransform>
+                                <Ellipse.Triggers>
+                                    <EventTrigger RoutedEvent="Ellipse.Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="SpinnerRotate"
+                                                                 Storyboard.TargetProperty="Angle"
+                                                                 From="0" To="360"
+                                                                 Duration="0:0:1"
+                                                                 RepeatBehavior="Forever"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Ellipse.Triggers>
+                            </Ellipse>
+                        </Grid>
                         <TextBlock Text="מתרגם..."
                                    FontSize="12"
                                    Foreground="{StaticResource SubtleTextBrush}"
                                    HorizontalAlignment="Center"
-                                   Margin="0,6,0,0"/>
+                                   Margin="0,10,0,0"/>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -218,11 +255,9 @@
                 <!-- בחירת שפת יעד -->
                 <ComboBox x:Name="TargetLangCombo"
                           Grid.Column="0"
-                          Width="120"
-                          Height="30"
-                          Background="{StaticResource CardBrush}"
-                          Foreground="{StaticResource TextBrush}"
-                          BorderBrush="{StaticResource BorderBrush}"
+                          Width="140"
+                          Style="{StaticResource CompactComboBox}"
+                          MaxDropDownHeight="260"
                           SelectionChanged="TargetLangCombo_SelectionChanged"/>
 
                 <!-- כפתורים -->
@@ -230,13 +265,14 @@
                     <Button Style="{StaticResource IconButton}"
                             Content="📋 העתק"
                             Click="CopyButton_Click"
-                            Margin="0,0,6,0"/>
+                            Margin="0,0,4,0"/>
                     <Button Style="{StaticResource IconButton}"
                             Content="🔄 תרגם שוב"
                             Click="RetranslateButton_Click"
-                            Margin="0,0,6,0"/>
+                            Margin="0,0,4,0"/>
                     <Button Style="{StaticResource IconButton}"
-                            Content="⚙️ הגדרות"
+                            Content="⚙️"
+                            ToolTip="הגדרות"
                             Click="SettingsButton_Click"/>
                 </StackPanel>
             </Grid>

@@ -29,7 +29,7 @@ namespace ClickToTranslate
         /// <summary>האם להשתמש ב-DeepL Free (api-free.deepl.com) או Pro (api.deepl.com)</summary>
         public bool DeepLUseFreeTier { get; set; } = true;
 
-        /// <summary>מיקום החלונית על המסך: "cursor", "center", "top-right"</summary>
+        /// <summary>מיקום החלונית על המסך: "cursor", "center", "top-right", "top-left"</summary>
         public string WindowPosition { get; set; } = "cursor";
 
         /// <summary>האם להעתיק אוטומטית את התרגום ללוח</summary>
@@ -37,6 +37,9 @@ namespace ClickToTranslate
 
         /// <summary>שקיפות החלונית (0.7-1.0)</summary>
         public double WindowOpacity { get; set; } = 0.98;
+
+        /// <summary>ערכת נושא: "system" (ברירת מחדל), "light", "dark"</summary>
+        public string Theme { get; set; } = "system";
     }
 
     public static class SettingsManager

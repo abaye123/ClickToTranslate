@@ -48,6 +48,17 @@ namespace ClickToTranslate
             }
             if (PositionCombo.SelectedItem == null) PositionCombo.SelectedIndex = 0;
 
+            // ערכת נושא
+            foreach (ComboBoxItem item in ThemeCombo.Items)
+            {
+                if ((string)item.Tag! == _settings.Theme)
+                {
+                    ThemeCombo.SelectedItem = item;
+                    break;
+                }
+            }
+            if (ThemeCombo.SelectedItem == null) ThemeCombo.SelectedIndex = 0;
+
             AutoCopyCheck.IsChecked = _settings.AutoCopyToClipboard;
 
             SettingsPathText.Text = $"קובץ הגדרות: {SettingsManager.GetSettingsPath()}";
@@ -82,6 +93,11 @@ namespace ClickToTranslate
             if (PositionCombo.SelectedItem is ComboBoxItem posItem && posItem.Tag is string pos)
             {
                 _settings.WindowPosition = pos;
+            }
+
+            if (ThemeCombo.SelectedItem is ComboBoxItem themeItem && themeItem.Tag is string themeTag)
+            {
+                _settings.Theme = themeTag;
             }
 
             SettingsManager.Save(_settings);

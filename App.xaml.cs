@@ -16,6 +16,9 @@ namespace ClickToTranslate
                 // טעינת הגדרות
                 var settings = SettingsManager.Load();
 
+                // טעינת ערכת נושא לפני יצירת חלונות
+                ThemeManager.Initialize(settings.Theme);
+
                 // טיפול בארגומנטים מיוחדים (רישום/ביטול הרישום של URI)
                 if (e.Args.Length > 0)
                 {

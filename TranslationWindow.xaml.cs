@@ -189,9 +189,14 @@ namespace ClickToTranslate
                         WindowStartupLocation = WindowStartupLocation.CenterScreen;
                         break;
                     case "top-right":
-                        var screenWidth = SystemParameters.WorkArea.Width;
-                        Left = screenWidth - Width - 20;
-                        Top = 20;
+                        var workArea = SystemParameters.WorkArea;
+                        Left = workArea.Left + workArea.Width - Width - 20;
+                        Top = workArea.Top + 20;
+                        break;
+                    case "top-left":
+                        var waLeft = SystemParameters.WorkArea;
+                        Left = waLeft.Left + 20;
+                        Top = waLeft.Top + 20;
                         break;
                     case "cursor":
                     default:
