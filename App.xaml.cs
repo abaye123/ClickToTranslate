@@ -19,6 +19,13 @@ namespace ClickToTranslate
                 // טעינת ערכת נושא לפני יצירת חלונות
                 ThemeManager.Initialize(settings.Theme);
 
+                // רישום אוטומטי של ה-URI protocol בהפעלה הראשונה
+                if (!UriProtocolHandler.IsRegistered())
+                {
+                    try { UriProtocolHandler.Register(); }
+                    catch { /* נמשיך גם אם הרישום נכשל */ }
+                }
+
                 // טיפול בארגומנטים מיוחדים (רישום/ביטול הרישום של URI)
                 if (e.Args.Length > 0)
                 {
